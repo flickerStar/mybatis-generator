@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+ 
+	<context id="context1" targetRuntime="MyBatis3">
+		
+		<!--指定生成的java文件的编码,没有直接生成到项目时中文可能会乱码 -->
+		<property name="javaFileEncoding" value="UTF-8"/>
+		
+		<!--自动实现Serializable接口-->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+ 
+		<!-- 自定义实现类实现中文注释 -->
+		<!-- <commentGenerator type = "com.mybatis.generator.pojo.MyCommentGenerator"/> -->
+		<!-- 修改源码自定义实现中文注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+ 
+		<!-- mysql配置_数据库基本信息 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+						connectionURL="jdbc:mysql://localhost:3306/demotest?characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&amp;zeroDateTimeBehavior=round"
+						userId="root"
+						password="root">
+			<!-- 针对mysql数据库 此配置是为了表字段对应的注释添加入实体类-->
+			<property name="useInformationSchema" value="true"></property>
+		</jdbcConnection>
+		<!-- 
+		是否使用BigDecimal数据类型 true是，false DECIMAL和NUMERIC列将被用Integral接收
+		<javaTypeResolver>
+			<property name ="forceBigDecimals" value ="false"/>
+		</javaTypeResolver> -->
+		<javaTypeResolver type="org.mybatis.generator.internal.types.MyJavaTypeResolverDefaultImpl"/>
+		
+		<!--生成实体类的位置以及包的名字-->
+		<javaModelGenerator targetPackage="com.mybatis.study.pojo"
+							targetProject="src/main/java">
+			<!-- 此配置false表示生成包路径以配置为准，不会增加数据库前路径 -->
+			<property name="enableSubPackages" value="false"/>
+			<!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		
+		<!-- 为每个表构建一个MyBatis / iBATIS格式的SQL映射XML文件 -->
+		<sqlMapGenerator targetPackage="com.mybatis.study.mapper" 
+						 targetProject="src/main/java">
+			<!-- 此配置表示生成包路径以配置为准，不会增加数据库前路径 -->
+			<property name ="enableSubPackages" value ="false"/>
+		</sqlMapGenerator>
+		
+		<!-- Java客户端生成器构建Java接口和类，允许轻松使用生成的Java模型和XML映射文件。 -->
+		<javaClientGenerator targetPackage="com.mybatis.study.mapper"
+			targetProject="src/main/java" type="XMLMAPPER">
+			<!-- 此配置false表示生成包路径以配置为准，不会增加数据库前路径 -->
+			<property name="enableSubPackages" value="false"/>
+		</javaClientGenerator>
+		
+		<!--对应的表名，以及实体名-->
+		<table tableName="user" domainObjectName="User" 
+		enableSelectByPrimaryKey = "false" enableUpdateByPrimaryKey = "false"
+		enableDeleteByPrimaryKey = "true" enableDeleteByExample = "true">
+			<!-- <ignoreColumn column ="age"/>  -->
+			<!-- <columnOverride column ="cost" property ="startDate"/>  -->
+		</table>
+		
+	</context>
+ 
+</generatorConfiguration>
